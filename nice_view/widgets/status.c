@@ -30,6 +30,7 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/split/central.h>
 
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
+static uint8_t right_batt_event_count = 0;
 
 struct output_status_state {
     struct zmk_endpoint_instance selected_endpoint;
@@ -89,9 +90,12 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
 
     lv_canvas_draw_text(canvas, 0, 0, CANVAS_SIZE, &label_dsc, output_text);
 
-    // Draw right-side battery in the lower portion of the pre-rotation canvas
-    // (this region maps to the left section of the top display area after rotation).
-    lv_canvas_draw_text(canvas, 0, 23, CANVAS_SIZE, &label_dsc_right_tag, "RIGHT");
+    // Draw right-side battery debug info:
+    //   top line: "R#N" where N = number of battery events received
+    //   bottom line: raw level percentage (0 = not connected / cleared by disconnect)
+    char right_debug_tag[12] = {};
+    snprintf(right_debug_tag, sizeof(right_debug_tag), "R#%d", right_batt_event_count);
+    lv_canvas_draw_text(canvas, 0, 23, CANVAS_SIZE, &label_dsc_right_tag, right_debug_tag);
 
     char right_batt_text[6] = {};
     snprintf(right_batt_text, sizeof(right_batt_text), "%d%%", state->right_battery);
@@ -227,6 +231,7 @@ static void set_right_battery_status(struct zmk_widget_status *widget,
 }
 
 static void right_battery_status_update_cb(struct right_battery_status_state state) {
+    right_batt_event_count++;
     struct zmk_widget_status *widget;
     SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
         set_right_battery_status(widget, state);
