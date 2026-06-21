@@ -57,8 +57,6 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
     init_label_dsc(&label_dsc, LVGL_FOREGROUND, &lv_font_montserrat_16, LV_TEXT_ALIGN_RIGHT);
     lv_draw_label_dsc_t label_dsc_right_pct;
     init_label_dsc(&label_dsc_right_pct, LVGL_FOREGROUND, &lv_font_montserrat_16, LV_TEXT_ALIGN_CENTER);
-    lv_draw_label_dsc_t label_dsc_right_tag;
-    init_label_dsc(&label_dsc_right_tag, LVGL_FOREGROUND, &lv_font_unscii_8, LV_TEXT_ALIGN_CENTER);
     lv_draw_rect_dsc_t rect_black_dsc;
     init_rect_dsc(&rect_black_dsc, LVGL_BACKGROUND);
 
@@ -90,16 +88,16 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
 
     lv_canvas_draw_text(canvas, 0, 0, CANVAS_SIZE, &label_dsc, output_text);
 
-    // Draw right-side battery debug info:
-    //   top line: "R#N" where N = number of battery events received
-    //   bottom line: raw level percentage (0 = not connected / cleared by disconnect)
-    char right_debug_tag[12] = {};
-    snprintf(right_debug_tag, sizeof(right_debug_tag), "R#%d", right_batt_event_count);
-    lv_canvas_draw_text(canvas, 0, 23, CANVAS_SIZE, &label_dsc_right_tag, right_debug_tag);
+    // Debug: event count (top line) + raw level (bottom line), both montserrat_16.
+    // "Ev:N" = N battery events received since boot.
+    // "NNN%" = raw reported level (0 means disconnected or not yet read).
+    char right_ev_text[10] = {};
+    snprintf(right_ev_text, sizeof(right_ev_text), "Ev:%d", right_batt_event_count);
+    lv_canvas_draw_text(canvas, 0, 18, CANVAS_SIZE, &label_dsc_right_pct, right_ev_text);
 
     char right_batt_text[6] = {};
     snprintf(right_batt_text, sizeof(right_batt_text), "%d%%", state->right_battery);
-    lv_canvas_draw_text(canvas, 0, 35, CANVAS_SIZE, &label_dsc_right_pct, right_batt_text);
+    lv_canvas_draw_text(canvas, 0, 36, CANVAS_SIZE, &label_dsc_right_pct, right_batt_text);
 
     // Rotate canvas
     rotate_canvas(canvas, cbuf);
