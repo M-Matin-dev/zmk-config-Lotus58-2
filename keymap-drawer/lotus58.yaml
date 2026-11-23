@@ -1,0 +1,307 @@
+layout: {zmk_keyboard: lotus58}
+layers:
+  Win/Lin:
+  - ESC
+  - '1'
+  - '2'
+  - '3'
+  - '4'
+  - '5'
+  - '6'
+  - '7'
+  - '8'
+  - '9'
+  - '0'
+  - EQUAL
+  - GRAVE
+  - Q
+  - W
+  - E
+  - R
+  - T
+  - Y
+  - U
+  - I
+  - O
+  - P
+  - LBKT
+  - TAB
+  - {t: A, h: LGUI}
+  - {t: S, h: LALT}
+  - {t: D, h: LCTRL}
+  - {t: F, h: LSHFT}
+  - G
+  - Mute
+  - Mute
+  - H
+  - {t: J, h: RSHFT}
+  - {t: K, h: RCTRL}
+  - {t: L, h: RALT}
+  - {t: SEMI, h: RGUI}
+  - SQT
+  - LCTRL
+  - Z
+  - X
+  - C
+  - V
+  - B
+  - Adjust
+  - DEL
+  - N
+  - M
+  - COMMA
+  - DOT
+  - FSLH
+  - {t: BSLH, h: RCTRL}
+  - LGUI
+  - LALT
+  - Lower
+  - SPACE
+  - RET
+  - Raise
+  - BSPC
+  - RGUI
+  Mac:
+  - ESC
+  - '1'
+  - '2'
+  - '3'
+  - '4'
+  - '5'
+  - '6'
+  - '7'
+  - '8'
+  - '9'
+  - '0'
+  - EQUAL
+  - GRAVE
+  - Q
+  - W
+  - E
+  - R
+  - T
+  - Y
+  - U
+  - I
+  - O
+  - P
+  - LBKT
+  - TAB
+  - {t: A, h: LCTRL}
+  - {t: S, h: LALT}
+  - {t: D, h: LGUI}
+  - {t: F, h: LSHFT}
+  - G
+  - Mute
+  - Mute
+  - H
+  - {t: J, h: RSHFT}
+  - {t: K, h: RGUI}
+  - {t: L, h: RALT}
+  - {t: SEMI, h: RCTRL}
+  - SQT
+  - LGUI
+  - Z
+  - X
+  - C
+  - V
+  - B
+  - Adjust
+  - DEL
+  - N
+  - M
+  - COMMA
+  - DOT
+  - FSLH
+  - {t: BSLH, h: RGUI}
+  - LCTRL
+  - LALT
+  - Lower
+  - SPACE
+  - RET
+  - Raise
+  - BSPC
+  - RCTRL
+  Lower:
+  - {t: ▽, type: trans}
+  - F1
+  - F2
+  - F3
+  - F4
+  - F5
+  - F6
+  - F7
+  - F8
+  - F9
+  - F10
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - Menu
+  - INS
+  - PrtSc
+  - Scroll Lock
+  - Pause
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - LEFT
+  - DOWN
+  - UP
+  - RIGHT
+  - Caps
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - Adjust
+  - {t: ▽, type: trans}
+  - HOME
+  - PG DN
+  - PG UP
+  - END
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - F11
+  - {t: ▽, type: trans}
+  - {type: held}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - Adjust
+  - {t: ▽, type: trans}
+  - F12
+  Raise:
+  - BT Clear all
+  - BT 1
+  - BT 2
+  - BT 3
+  - BT 4
+  - BT 5
+  - OUT TOG
+  - OUT USB
+  - OUT BLE
+  - {t: ▽, type: trans}
+  - Reset
+  - Boot loader
+  - {t: ▽, type: trans}
+  - GRAVE
+  - AMPS
+  - STAR
+  - LPAR
+  - {t: ▽, type: trans}
+  - UNDER
+  - MINUS
+  - LPAR
+  - RPAR
+  - EQUAL
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - SQT
+  - DLLR
+  - PRCNT
+  - CARET
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - LBKT
+  - RBKT
+  - LBRC
+  - RBRC
+  - BSLH
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '"'
+  - EXCL
+  - AT
+  - HASH
+  - {t: ▽, type: trans}
+  - Adjust
+  - {t: ▽, type: trans}
+  - PIPE
+  - PLUS
+  - <
+  - '>'
+  - FSLH
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - Adjust
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {type: held}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  Adjust:
+  - {t: ▽, type: trans}
+  - BT 1
+  - BT 2
+  - BT 3
+  - BT 4
+  - BT 5
+  - {t: Mac/Win, s: toggle}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - Mouse ↑
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - Scroll ↑
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - Mouse ←
+  - Mouse ↓
+  - Mouse →
+  - {t: ▽, type: trans}
+  - Scroll ↓
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {type: held}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - L Click
+  - R Click
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}

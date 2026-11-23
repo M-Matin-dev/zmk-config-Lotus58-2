@@ -1,0 +1,209 @@
+<title>Lotus58 Keymap</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one board at a time under layer tabs; hovering a key fills an inspector showing that key on every layer. */
+:root {
+  --bg: #eef0f3;
+  --panel: #ffffff;
+  --fg: #1d232b;
+  --muted: #5d6773;
+  --line: #cfd5dc;
+  --key: #f8f9fb;
+  --key-stroke: #b9c1ca;
+  --trans: #a3acb6;
+  --hold: #2f6fb3;
+  --held: #f4d2c4;
+  --accent: #2f6fb3;
+  --hover: #d9e7f6;
+  --sans: "IBM Plex Sans", system-ui, sans-serif;
+  --mono: "JetBrains Mono", SFMono-Regular, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15191e; --panel: #1d232a; --fg: #e3e8ee; --muted: #93a0ad; --line: #2e3640;
+    --key: #262e37; --key-stroke: #3c4652; --trans: #5c6773; --hold: #8bb8ea;
+    --held: #6b3d30; --accent: #8bb8ea; --hover: #23405f; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15191e; --panel: #1d232a; --fg: #e3e8ee; --muted: #93a0ad; --line: #2e3640;
+  --key: #262e37; --key-stroke: #3c4652; --trans: #5c6773; --hold: #8bb8ea;
+  --held: #6b3d30; --accent: #8bb8ea; --hover: #23405f; color-scheme: dark;
+}
+body { background: var(--bg); color: var(--fg); font-family: var(--sans); }
+.wrap {
+  max-width: 1080px; margin: 0 auto;
+  padding-block: 28px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 20px;
+}
+header { display: grid; gap: 6px; }
+h1 { font-size: 1.6rem; margin: 0; font-weight: 600; text-wrap: balance; }
+header p { margin: 0; color: var(--muted); max-width: 70ch; line-height: 1.5; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tabs button {
+  font: 500 0.9rem var(--sans); color: var(--fg); background: var(--panel);
+  border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; cursor: pointer;
+  display: inline-flex; gap: 8px; align-items: center;
+}
+.tabs button kbd { font: 0.72rem var(--mono); color: var(--muted); }
+.tabs button[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.tabs button[aria-selected="true"] kbd { color: var(--bg); opacity: .8; }
+.tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.stage { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 12px; overflow-x: auto; }
+.board svg { display: block; width: 100%; min-width: 640px; height: auto; }
+.board svg text.label { display: none; }
+.board svg.keymap { fill: var(--fg); font-family: var(--mono); }
+.board svg rect.key { fill: var(--key); stroke: var(--key-stroke); transition: fill .12s; }
+.board svg rect.held { fill: var(--held); }
+.board svg text.trans { fill: var(--trans); }
+.board svg text.hold, .board svg text.shifted { fill: var(--hold); }
+.board svg g.key { cursor: default; }
+.board svg g.key.layer-activator, .board svg g.key[data-goto] { cursor: pointer; }
+.board svg g.key.hl rect.key { fill: var(--hover); }
+.board svg g.key[data-goto] text.tap { text-decoration: underline; }
+.lower-row { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 20px; }
+@media (max-width: 760px) { .lower-row { grid-template-columns: 1fr; } }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; min-width: 0; }
+.card h2 { font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; font-weight: 600; }
+table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+td { padding: 6px 0; border-top: 1px solid var(--line); vertical-align: top; }
+td:first-child { color: var(--muted); width: 38%; padding-right: 12px; }
+td.v { font-family: var(--mono); }
+td.v .h { color: var(--hold); font-size: .82rem; }
+td.v .t { color: var(--trans); }
+tr.cur td { font-weight: 600; }
+.hint { color: var(--muted); font-size: .88rem; margin: 0; line-height: 1.5; }
+ul.notes { margin: 0; padding-left: 18px; line-height: 1.6; font-size: .9rem; }
+code { font-family: var(--mono); font-size: .85em; }
+footer { color: var(--muted); font-size: .8rem; }
+@media (prefers-reduced-motion: reduce) { .board svg rect.key { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Lotus58 keymap</h1>
+    <p>Drawn from <code>config/lotus58.keymap</code> on the Lily58 column-stagger layout, plus the two encoder push keys between the halves. Pick a layer (arrow keys also work), or click a layer key on the board to jump to it. Hover any key to see what it does on every layer.</p>
+  </header>
+
+  <div class="tabs" role="tablist" id="tabs"></div>
+
+  <div class="stage" id="stage">
+<!--BOARDS-->
+  </div>
+
+  <div class="lower-row">
+    <section class="card" aria-live="polite">
+      <h2 id="insp-title">Key inspector</h2>
+      <p class="hint" id="insp-hint">Hover or tap a key on the board.</p>
+      <table id="insp" hidden><tbody></tbody></table>
+    </section>
+    <section class="card">
+      <h2>Notes</h2>
+      <ul class="notes">
+        <li>Small blue text is the hold action (home-row mods, balanced flavor, 200&nbsp;ms tapping term).</li>
+        <li>▽ means transparent: the key falls through to the layer below.</li>
+        <li>The shaded key is the one held to reach the layer you're viewing.</li>
+        <li>Encoders: left turns volume; right turns Page Up/Down (on Lower it's next/previous track).</li>
+        <li>Adjust is Lower + Raise held together. Its keys 1–5 pick Bluetooth profiles 1–5.</li>
+        <li>Each profile (and USB) remembers its own Mac or Win mode. Lower + Raise + 6 flips the current one and saves it, so the right mods come back after a reboot and whenever you switch to that profile. The nice!view shows MAC or WIN under the layer name.</li>
+      </ul>
+    </section>
+  </div>
+  <footer>Rendered with keymap-drawer. Regenerate with <code>keymap-drawer/build.sh</code>.</footer>
+</div>
+
+<script>
+(function () {
+  const boards = [...document.querySelectorAll('.board')];
+  const names = boards.map(b => b.dataset.name);
+  const tabs = document.getElementById('tabs');
+  let current = 0, pinned = null;
+
+  // Label text of a key group, per layer, for the inspector.
+  function labelOf(g) {
+    if (!g) return null;
+    const tap = g.querySelector('text.tap');
+    const hold = g.querySelector('text.hold');
+    const shifted = g.querySelector('text.shifted');
+    const txt = el => el ? [...el.querySelectorAll('tspan')].map(t => t.textContent).join(' ') || el.textContent : '';
+    return { tap: txt(tap), hold: txt(hold), shifted: txt(shifted),
+             trans: g.querySelector('text.trans') !== null, held: g.querySelector('rect.held') !== null };
+  }
+
+  boards.forEach((b, i) => {
+    const btn = document.createElement('button');
+    btn.type = 'button'; btn.role = 'tab'; btn.id = 'tab-' + i;
+    btn.textContent = b.dataset.name;
+    btn.addEventListener('click', () => show(i));
+    tabs.appendChild(btn);
+    // Make layer keys clickable: match their label to a layer name.
+    b.querySelectorAll('g.key').forEach(g => {
+      const l = labelOf(g);
+      const target = names.findIndex(n => n.toLowerCase() === (l.tap || '').toLowerCase());
+      if (target >= 0) { g.dataset.goto = target; g.setAttribute('tabindex', '0'); }
+    });
+  });
+
+  function show(i) {
+    current = i;
+    boards.forEach((b, j) => b.hidden = j !== i);
+    [...tabs.children].forEach((t, j) => t.setAttribute('aria-selected', String(j === i)));
+    try { localStorage.setItem('lotus58-layer', String(i)); } catch (e) {}
+    if (pinned !== null) inspect(pinned);
+  }
+
+  function posOf(g) { const m = g.getAttribute('class').match(/keypos-(\d+)/); return m ? +m[1] : null; }
+
+  function inspect(pos) {
+    boards.forEach(b => b.querySelectorAll('g.key.hl').forEach(g => g.classList.remove('hl')));
+    if (pos === null) return;
+    boards[current].querySelector('g.keypos-' + pos)?.classList.add('hl');
+    const tb = document.querySelector('#insp tbody');
+    tb.innerHTML = '';
+    boards.forEach((b, i) => {
+      const l = labelOf(b.querySelector('g.keypos-' + pos));
+      const tr = document.createElement('tr');
+      if (i === current) tr.className = 'cur';
+      const a = document.createElement('td'); a.textContent = b.dataset.name;
+      const v = document.createElement('td'); v.className = 'v';
+      if (!l || l.held) v.innerHTML = '<span class="t">held to enter this layer</span>';
+      else if (l.trans) v.innerHTML = '<span class="t">▽ transparent</span>';
+      else {
+        v.textContent = [l.shifted, l.tap].filter(Boolean).join(' / ') || '(none)';
+        if (l.hold) { const h = document.createElement('span'); h.className = 'h'; h.textContent = '  hold: ' + l.hold; v.appendChild(h); }
+      }
+      tr.append(a, v); tb.appendChild(tr);
+    });
+    document.getElementById('insp-title').textContent = 'Key position ' + pos;
+    document.getElementById('insp-hint').hidden = true;
+    document.getElementById('insp').hidden = false;
+  }
+
+  document.getElementById('stage').addEventListener('pointerover', e => {
+    const g = e.target.closest('g.key'); if (g) inspect(posOf(g));
+  });
+  document.getElementById('stage').addEventListener('pointerleave', () => inspect(pinned));
+  document.getElementById('stage').addEventListener('click', e => {
+    const g = e.target.closest('g.key'); if (!g) return;
+    if (g.dataset.goto !== undefined) { show(+g.dataset.goto); return; }
+    pinned = posOf(g); inspect(pinned);
+  });
+  document.getElementById('stage').addEventListener('keydown', e => {
+    const g = e.target.closest('g.key');
+    if (g && g.dataset.goto !== undefined && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); show(+g.dataset.goto); }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.target.closest('input,textarea')) return;
+    if (e.key === 'ArrowRight') show((current + 1) % boards.length);
+    if (e.key === 'ArrowLeft') show((current - 1 + boards.length) % boards.length);
+  });
+
+  let start = 0;
+  try { const s = +localStorage.getItem('lotus58-layer'); if (s >= 0 && s < boards.length) start = s; } catch (e) {}
+  show(start);
+})();
+</script>

@@ -9,3 +9,10 @@ if(CONFIG_ZMK_DISPLAY AND CONFIG_ZMK_DISPLAY_STATUS_SCREEN_CUSTOM AND NOT CONFIG
     zephyr_library_sources(nice_view/widgets/util.c)
     zephyr_library_sources(nice_view/widgets/status.c)
 endif()
+
+# Per-connection Mac/Win mode (&os_mode behavior). The keymap runs only on the
+# central (left) half, so the peripheral build skips it.
+zephyr_include_directories(include)
+if((NOT CONFIG_ZMK_SPLIT) OR CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
+    target_sources(app PRIVATE src/os_mode.c)
+endif()

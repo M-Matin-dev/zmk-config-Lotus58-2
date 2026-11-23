@@ -28,9 +28,9 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/endpoints.h>
 #include <zmk/keymap.h>
 #include <zmk/split/central.h>
+#include <os_mode.h>
 
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
-static uint8_t right_batt_event_count = 0;
 
 struct output_status_state {
     struct zmk_endpoint_instance selected_endpoint;
@@ -57,6 +57,8 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
     init_label_dsc(&label_dsc, LVGL_FOREGROUND, &lv_font_montserrat_16, LV_TEXT_ALIGN_RIGHT);
     lv_draw_label_dsc_t label_dsc_right_pct;
     init_label_dsc(&label_dsc_right_pct, LVGL_FOREGROUND, &lv_font_montserrat_16, LV_TEXT_ALIGN_CENTER);
+    lv_draw_label_dsc_t label_dsc_right_tag;
+    init_label_dsc(&label_dsc_right_tag, LVGL_FOREGROUND, &lv_font_unscii_8, LV_TEXT_ALIGN_CENTER);
     lv_draw_rect_dsc_t rect_black_dsc;
     init_rect_dsc(&rect_black_dsc, LVGL_BACKGROUND);
 
@@ -88,16 +90,15 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
 
     lv_canvas_draw_text(canvas, 0, 0, CANVAS_SIZE, &label_dsc, output_text);
 
-    // Debug: event count (top line) + raw level (bottom line), both montserrat_16.
-    // "Ev:N" = N battery events received since boot.
-    // "NNN%" = raw reported level (0 means disconnected or not yet read).
-    char right_ev_text[10] = {};
-    snprintf(right_ev_text, sizeof(right_ev_text), "Ev:%d", right_batt_event_count);
-    lv_canvas_draw_text(canvas, 0, 18, CANVAS_SIZE, &label_dsc_right_pct, right_ev_text);
+    lv_canvas_draw_text(canvas, 0, 23, CANVAS_SIZE, &label_dsc_right_tag, "RIGHT");
 
     char right_batt_text[6] = {};
-    snprintf(right_batt_text, sizeof(right_batt_text), "%d%%", state->right_battery);
-    lv_canvas_draw_text(canvas, 0, 36, CANVAS_SIZE, &label_dsc_right_pct, right_batt_text);
+    if (state->right_battery > 0) {
+        snprintf(right_batt_text, sizeof(right_batt_text), "%d%%", state->right_battery);
+    } else {
+        snprintf(right_batt_text, sizeof(right_batt_text), "--");
+    }
+    lv_canvas_draw_text(canvas, 0, 35, CANVAS_SIZE, &label_dsc_right_pct, right_batt_text);
 
     // Rotate canvas
     rotate_canvas(canvas, cbuf);
@@ -179,6 +180,13 @@ static void draw_bottom(lv_obj_t *widget, lv_color_t cbuf[], const struct status
         lv_canvas_draw_text(canvas, 0, 5, 68, &label_dsc, state->layer_label);
     }
 
+    // Mac/Win mode of the current connection (see src/os_mode.c). Stays visible
+    // while Lower/Raise/Adjust are held. Redrawn on every layer change, which
+    // includes the Mac layer switching on or off.
+    lv_draw_label_dsc_t mode_dsc;
+    init_label_dsc(&mode_dsc, LVGL_FOREGROUND, &lv_font_unscii_8, LV_TEXT_ALIGN_CENTER);
+    lv_canvas_draw_text(canvas, 0, 28, 68, &mode_dsc, os_mode_is_mac() ? "MAC" : "WIN");
+
     // Rotate canvas
     rotate_canvas(canvas, cbuf);
 }
@@ -224,12 +232,16 @@ ZMK_SUBSCRIPTION(widget_battery_status, zmk_usb_conn_state_changed);
 
 static void set_right_battery_status(struct zmk_widget_status *widget,
                                      struct right_battery_status_state state) {
-    widget->state.right_battery = state.level;
+    // level 0 means disconnected/cleared (split_central_disconnected injects 0).
+    // A genuinely dead peripheral won't be sending BLE packets, so 0 is never
+    // a real reading worth displaying. Keep the last known good value instead.
+    if (state.level > 0) {
+        widget->state.right_battery = state.level;
+    }
     draw_top(widget->obj, widget->cbuf, &widget->state);
 }
 
 static void right_battery_status_update_cb(struct right_battery_status_state state) {
-    right_batt_event_count++;
     struct zmk_widget_status *widget;
     SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
         set_right_battery_status(widget, state);

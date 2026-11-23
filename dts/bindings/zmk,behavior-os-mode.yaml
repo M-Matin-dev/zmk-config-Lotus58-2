@@ -1,0 +1,15 @@
+description: |
+  Remembers a Mac or Windows mode for each connection (every BLE profile, plus USB)
+  and turns the Mac layer on or off to match. The choice is saved to flash, so it
+  comes back after a reboot and whenever you switch to that profile.
+  Use with OS_WIN, OS_MAC or OS_TOG from <dt-bindings/os_mode.h>.
+
+compatible: "zmk,behavior-os-mode"
+
+include: one_param.yaml
+
+properties:
+  mac-layer:
+    type: int
+    required: true
+    description: Index of the layer that holds the Mac mods.
