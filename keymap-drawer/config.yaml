@@ -8,7 +8,7 @@ draw_config:
 parse_config:
   trans_legend: {t: '▽', type: trans}
   raw_binding_map:
-    '&os_mode OS_TOG': {t: 'Mac/Win', s: 'toggle'}
+    '&os_mode OS_TOG': {t: 'OS', s: 'Mac/Win'}
     '&os_mode OS_MAC': 'Mac mode'
     '&os_mode OS_WIN': 'Win mode'
     # Profiles are numbered from 1 to match the nice!view (ZMK's BT_SEL 0 = profile 1).
