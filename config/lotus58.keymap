@@ -199,25 +199,25 @@
 // OS on A and ; (the GUI home-row keys): flip the current profile between Mac and Win mods.
 // The choice is written to flash 60 s after the press (ZMK's settings save delay), so
 // wait a minute before powering off.
-// Mouse moves on the vim keys H/J/K/L; scroll on M/, (where Lower has PgDn/PgUp).
+// Mouse keys live on the Mouse layer (left outer thumb).
 // ┌─────────┬──────────┬──────────┬──────────┬──────────┬───────┐                         ┌───────┬───────┬───────┬───────┬───────┬───────┐
 // │         │   BT1    │   BT2    │   BT3    │   BT4    │  BT5  │                         │       │       │       │       │       │       │
 // ├─────────┼──────────┼──────────┼──────────┼──────────┼───────┤                         ├───────┼───────┼───────┼───────┼───────┼───────┤
 // │         │          │          │          │          │       │                         │       │       │       │       │       │       │
 // ├─────────┼──────────┼──────────┼──────────┼──────────┼───────┼──────────┐ ┌────────────┼───────┼───────┼───────┼───────┼───────┼───────┤
-// │         │    OS    │          │          │          │       │          │ │            │MOUSE← │MOUSE↓ │MOUSE↑ │MOUSE→ │  OS   │       │
+// │         │    OS    │          │          │          │       │          │ │            │       │       │       │       │  OS   │       │
 // ├─────────┼──────────┼──────────┼──────────┼──────────┼───────┼──────────┤ ├────────────┼───────┼───────┼───────┼───────┼───────┼───────┤
-// │         │          │          │          │          │       │          │ │            │       │ SCR↓  │ SCR↑  │       │       │       │
+// │         │          │          │          │          │       │          │ │            │       │       │       │       │       │       │
 // └─────────┴──────────┴──────────┴──────────┴──────────┴───────┴──────────┘ └────────────┴───────┴───────┴───────┴───────┴───────┴───────┘
 //                           ┌────────┬─────────┬───────┬───────┐      ┌───────┬───────┬───────┬───────┐
-//                           │ LCLICK │ RCLICK  │       │       │      │       │       │       │       │
+//                           │        │         │       │       │      │       │       │       │       │
 //                           └────────┴─────────┴───────┴───────┘      └───────┴───────┴───────┴───────┘
             bindings = <
-&trans  &bt BT_SEL 0     &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4                     &trans          &trans          &trans          &trans           &trans           &trans
-&trans  &trans           &trans        &trans        &trans        &trans                           &trans          &trans          &trans          &trans           &trans           &trans
-&trans  &os_mode OS_TOG  &trans        &trans        &trans        &trans        &trans  &trans     &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_UP    &mmv MOVE_RIGHT  &os_mode OS_TOG  &trans
-&trans  &trans           &trans        &trans        &trans        &trans        &trans  &trans     &trans          &msc SCRL_DOWN  &msc SCRL_UP    &trans           &trans           &trans
-                                       &mkp LCLK     &mkp RCLK     &trans        &trans  &trans     &trans          &trans          &trans
+&trans  &bt BT_SEL 0     &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4                     &trans  &trans  &trans  &trans  &trans           &trans
+&trans  &trans           &trans        &trans        &trans        &trans                           &trans  &trans  &trans  &trans  &trans           &trans
+&trans  &os_mode OS_TOG  &trans        &trans        &trans        &trans        &trans  &trans     &trans  &trans  &trans  &trans  &os_mode OS_TOG  &trans
+&trans  &trans           &trans        &trans        &trans        &trans        &trans  &trans     &trans  &trans  &trans  &trans  &trans           &trans
+                                       &trans        &trans        &trans        &trans  &trans     &trans  &trans  &trans
             >;
             sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp PG_UP PG_DN>;
         };
