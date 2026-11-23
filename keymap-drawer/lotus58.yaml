@@ -12,9 +12,9 @@ layers:
   - '8'
   - '9'
   - '0'
-  - EQUAL
-  - GRAVE
-  - Q
+  - '='
+  - '`'
+  - {t: Q, s: 'Ctrl: Alt+F4'}
   - W
   - E
   - R
@@ -24,9 +24,9 @@ layers:
   - I
   - O
   - P
-  - LBKT
-  - TAB
-  - {t: A, h: LGUI}
+  - '['
+  - {t: Tab, s: 'Ctrl: Alt+Tab'}
+  - {t: A, h: LCTRL}
   - {t: S, h: LALT}
   - {t: D, h: LCTRL}
   - {t: F, h: LSHFT}
@@ -37,24 +37,24 @@ layers:
   - {t: J, h: RSHFT}
   - {t: K, h: RCTRL}
   - {t: L, h: RALT}
-  - {t: SEMI, h: RGUI}
-  - SQT
+  - {t: ;, h: RCTRL}
+  - ''''
   - LCTRL
   - Z
   - X
   - C
   - V
   - B
-  - Adjust
-  - DEL
+  - LGUI
+  - RGUI
   - N
   - M
-  - COMMA
-  - DOT
-  - FSLH
-  - {t: BSLH, h: RCTRL}
+  - ','
+  - .
+  - /
+  - {t: \, h: RCTRL}
   - LGUI
-  - LALT
+  - DEL
   - Lower
   - SPACE
   - RET
@@ -73,8 +73,8 @@ layers:
   - '8'
   - '9'
   - '0'
-  - EQUAL
-  - GRAVE
+  - '='
+  - '`'
   - Q
   - W
   - E
@@ -85,7 +85,7 @@ layers:
   - I
   - O
   - P
-  - LBKT
+  - '['
   - TAB
   - {t: A, h: LCTRL}
   - {t: S, h: LALT}
@@ -98,24 +98,24 @@ layers:
   - {t: J, h: RSHFT}
   - {t: K, h: RGUI}
   - {t: L, h: RALT}
-  - {t: SEMI, h: RCTRL}
-  - SQT
+  - {t: ;, h: RCTRL}
+  - ''''
   - LGUI
   - Z
   - X
   - C
   - V
   - B
-  - Adjust
-  - DEL
+  - LGUI
+  - RGUI
   - N
   - M
-  - COMMA
-  - DOT
-  - FSLH
-  - {t: BSLH, h: RGUI}
+  - ','
+  - .
+  - /
+  - {t: \, h: RGUI}
   - LCTRL
-  - LALT
+  - DEL
   - Lower
   - SPACE
   - RET
@@ -197,44 +197,44 @@ layers:
   - Reset
   - Boot loader
   - {t: ▽, type: trans}
-  - GRAVE
-  - AMPS
-  - STAR
-  - LPAR
+  - '`'
+  - '&'
+  - '*'
+  - (
   - {t: ▽, type: trans}
-  - UNDER
-  - MINUS
-  - LPAR
-  - RPAR
-  - EQUAL
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - SQT
-  - DLLR
-  - PRCNT
-  - CARET
+  - _
+  - '-'
+  - (
+  - )
+  - '='
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
+  - ''''
+  - $
+  - '%'
+  - ^
   - {t: ▽, type: trans}
-  - LBKT
-  - RBKT
-  - LBRC
-  - RBRC
-  - BSLH
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '['
+  - ']'
+  - '{'
+  - '}'
+  - \
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - '"'
-  - EXCL
-  - AT
-  - HASH
+  - '!'
+  - '@'
+  - '#'
   - {t: ▽, type: trans}
   - Adjust
   - {t: ▽, type: trans}
-  - PIPE
-  - PLUS
+  - '|'
+  - +
   - <
   - '>'
-  - FSLH
+  - /
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -299,7 +299,7 @@ layers:
   - {t: ▽, type: trans}
   - L Click
   - R Click
-  - {t: ▽, type: trans}
+  - {type: held}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}

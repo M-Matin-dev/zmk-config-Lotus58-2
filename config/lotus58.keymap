@@ -53,6 +53,36 @@
             #binding-cells = <1>;
             mac-layer = <MAC>;
         };
+
+        // Alt+Tab app switcher (zmk-tri-state module, see config/west.yml).
+        // First press: Alt down + Tab. Further presses: Tab (Alt stays down).
+        // Pressing or releasing any other key (e.g. letting go of K) releases Alt.
+        // F and J (Shift) are ignored so Shift+Tab steps backwards.
+        alt_tab: alt_tab {
+            compatible = "zmk,behavior-tri-state";
+            #binding-cells = <0>;
+            bindings = <&kt LALT>, <&kp TAB>, <&kt LALT>;
+            ignored-key-positions = <28 33>;
+        };
+
+        // Win mode Tab (TAB* in the diagram below): with Ctrl held (D/K, the Mac Cmd positions) it becomes the
+        // Alt+Tab switcher, matching Cmd+Tab on the Mac. Ctrl is hidden from the host
+        // while Tab is sent. Plain Tab is unchanged.
+        win_tab: win_tab {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp TAB>, <&alt_tab>;
+            mods = <(MOD_LCTL|MOD_RCTL)>;
+        };
+
+        // Win mode Q (Q* in the diagram below): Ctrl+Q sends Alt+F4 (close the app),
+        // matching Cmd+Q on the Mac. Plain Q is unchanged.
+        win_q: win_q {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp Q>, <&kp LA(F4)>;
+            mods = <(MOD_LCTL|MOD_RCTL)>;
+        };
     };
 
     keymap {
@@ -63,21 +93,21 @@
 // ┌─────────┬─────┬─────┬─────┬──────────┬─────┐                            ┌─────┬──────────┬──────────┬──────────┬──────────┬────────┐
 // │   ESC   │  1  │  2  │  3  │    4     │  5  │                            │  6  │    7     │    8     │    9     │    0     │   =    │
 // ├─────────┼─────┼─────┼─────┼──────────┼─────┤                            ├─────┼──────────┼──────────┼──────────┼──────────┼────────┤
-// │    `    │  Q  │  W  │  E  │    R     │  T  │                            │  Y  │    U     │    I     │    O     │    P     │   [    │
+// │    `    │ Q*  │  W  │  E  │    R     │  T  │                            │  Y  │    U     │    I     │    O     │    P     │   [    │
 // ├─────────┼─────┼─────┼─────┼──────────┼─────┼──────────┐  ┌─────────────┼─────┼──────────┼──────────┼──────────┼──────────┼────────┤
-// │   TAB   │GUI/A│ALT/S│CTL/D│  SHF/F  │  G  │   MUTE   │  │    MUTE     │  H  │  SHF/J  │  CTL/K  │  ALT/L  │  GUI/;  │   '    │
+// │  TAB*   │CTL/A│ALT/S│CTL/D│  SHF/F  │  G  │   MUTE   │  │    MUTE     │  H  │  SHF/J  │  CTL/K  │  ALT/L  │  CTL/;  │   '    │
 // ├─────────┼─────┼─────┼─────┼──────────┼─────┼──────────┤  ├─────────────┼─────┼──────────┼──────────┼──────────┼──────────┼────────┤
-// │  LCTRL  │  Z  │  X  │  C  │    V     │  B  │  ADJUST  │  │     DEL     │  N  │    M     │    ,     │    .     │    /     │ RCTL/\ │
+// │  LCTRL  │  Z  │  X  │  C  │    V     │  B  │   LGUI   │  │    RGUI     │  N  │    M     │    ,     │    .     │    /     │ RCTL/\ │
 // └─────────┴─────┴─────┴─────┴──────────┴─────┴──────────┘  └─────────────┴─────┴──────────┴──────────┴──────────┴──────────┴────────┘
 //                     ┌──────┬──────┬───────┬────────┐      ┌──────┬───────┬──────┬──────┐
-//                     │ LGUI │ LALT │ LOWER │  SPC   │      │ ENT  │ RAISE │ BSPC │ RGUI │
+//                     │ LGUI │ DEL  │ LOWER │  SPC   │      │ ENT  │ RAISE │ BSPC │ RGUI │
 //                     └──────┴──────┴───────┴────────┘      └──────┴───────┴──────┴──────┘
             bindings = <
 &kp ESC    &kp N1        &kp N2       &kp N3        &kp N4        &kp N5                                   &kp N6  &kp N7        &kp N8        &kp N9       &kp N0          &kp EQUAL
-&kp GRAVE  &kp Q         &kp W        &kp E         &kp R         &kp T                                    &kp Y   &kp U         &kp I         &kp O        &kp P           &kp LBKT
-&kp TAB    &hml LGUI A   &hml LALT S  &hml LCTRL D  &hml LSHFT F  &kp G   &kp C_MUTE    &kp C_MUTE        &kp H   &hmr RSHFT J  &hmr RCTRL K  &hmr RALT L  &hmr RGUI SEMI  &kp SQT
-&kp LCTRL  &kp Z         &kp X        &kp C         &kp V         &kp B   &mo ADJUST     &kp DEL           &kp N   &kp M         &kp COMMA     &kp DOT      &kp FSLH        &mt RCTRL BSLH
-                                       &kp LGUI  &kp LALT  &mo LOWER  &kp SPACE    &kp RET  &mo RAISE  &kp BSPC  &kp RGUI
+&kp GRAVE  &win_q        &kp W        &kp E         &kp R         &kp T                                    &kp Y   &kp U         &kp I         &kp O        &kp P           &kp LBKT
+&win_tab   &hml LCTRL A  &hml LALT S  &hml LCTRL D  &hml LSHFT F  &kp G   &kp C_MUTE    &kp C_MUTE        &kp H   &hmr RSHFT J  &hmr RCTRL K  &hmr RALT L  &hmr RCTRL SEMI &kp SQT
+&kp LCTRL  &kp Z         &kp X        &kp C         &kp V         &kp B   &kp LGUI       &kp RGUI          &kp N   &kp M         &kp COMMA     &kp DOT      &kp FSLH        &mt RCTRL BSLH
+                                       &kp LGUI  &kp DEL   &mo LOWER  &kp SPACE    &kp RET  &mo RAISE  &kp BSPC  &kp RGUI
             >;
             sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp PG_UP PG_DN>;
         };
@@ -93,17 +123,17 @@
 // ├─────────┼─────┼─────┼─────┼──────────┼─────┼──────────┐  ┌─────────────┼─────┼──────────┼──────────┼──────────┼──────────┼────────┤
 // │   TAB   │CTL/A│ALT/S│GUI/D│  SHF/F  │  G  │   MUTE   │  │    MUTE     │  H  │  SHF/J  │  GUI/K  │  ALT/L  │  CTL/;  │   '    │
 // ├─────────┼─────┼─────┼─────┼──────────┼─────┼──────────┤  ├─────────────┼─────┼──────────┼──────────┼──────────┼──────────┼────────┤
-// │  LGUI   │  Z  │  X  │  C  │    V     │  B  │  ADJUST  │  │     DEL     │  N  │    M     │    ,     │    .     │    /     │ RGUI/\ │
+// │  LGUI   │  Z  │  X  │  C  │    V     │  B  │   LGUI   │  │    RGUI     │  N  │    M     │    ,     │    .     │    /     │ RGUI/\ │
 // └─────────┴─────┴─────┴─────┴──────────┴─────┴──────────┘  └─────────────┴─────┴──────────┴──────────┴──────────┴──────────┴────────┘
 //                     ┌───────┬──────┬───────┬────────┐      ┌──────┬───────┬──────┬───────┐
-//                     │ LCTRL │ LALT │ LOWER │  SPC   │      │ ENT  │ RAISE │ BSPC │ RCTRL │
+//                     │ LCTRL │ DEL  │ LOWER │  SPC   │      │ ENT  │ RAISE │ BSPC │ RCTRL │
 //                     └───────┴──────┴───────┴────────┘      └──────┴───────┴──────┴───────┘
             bindings = <
 &kp ESC    &kp N1         &kp N2       &kp N3       &kp N4        &kp N5                                   &kp N6  &kp N7        &kp N8       &kp N9       &kp N0           &kp EQUAL
 &kp GRAVE  &kp Q          &kp W        &kp E        &kp R         &kp T                                    &kp Y   &kp U         &kp I        &kp O        &kp P            &kp LBKT
 &kp TAB    &hml LCTRL A   &hml LALT S  &hml LGUI D  &hml LSHFT F  &kp G   &kp C_MUTE    &kp C_MUTE        &kp H   &hmr RSHFT J  &hmr RGUI K  &hmr RALT L  &hmr RCTRL SEMI  &kp SQT
-&kp LGUI   &kp Z          &kp X        &kp C        &kp V         &kp B   &mo ADJUST     &kp DEL           &kp N   &kp M         &kp COMMA    &kp DOT      &kp FSLH         &mt RGUI BSLH
-                                        &kp LCTRL  &kp LALT  &mo LOWER  &kp SPACE    &kp RET  &mo RAISE  &kp BSPC  &kp RCTRL
+&kp LGUI   &kp Z          &kp X        &kp C        &kp V         &kp B   &kp LGUI       &kp RGUI          &kp N   &kp M         &kp COMMA    &kp DOT      &kp FSLH         &mt RGUI BSLH
+                                        &kp LCTRL  &kp DEL   &mo LOWER  &kp SPACE    &kp RET  &mo RAISE  &kp BSPC  &kp RCTRL
             >;
             sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp PG_UP PG_DN>;
         };

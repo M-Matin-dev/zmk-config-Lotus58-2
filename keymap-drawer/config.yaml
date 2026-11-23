@@ -8,6 +8,8 @@ draw_config:
 parse_config:
   trans_legend: {t: '▽', type: trans}
   raw_binding_map:
+    '&win_tab': {t: 'Tab', s: 'Ctrl: Alt+Tab'}
+    '&win_q': {t: 'Q', s: 'Ctrl: Alt+F4'}
     '&os_mode OS_TOG': {t: 'OS', s: 'Mac/Win'}
     '&os_mode OS_MAC': 'Mac mode'
     '&os_mode OS_WIN': 'Win mode'
@@ -28,13 +30,14 @@ parse_config:
     '&bootloader': 'Boot loader'
     '&sys_reset': 'Reset'
     '&bt BT_CLR_ALL': 'BT Clear all'
-  zmk_keycode_map:
-    C_MUTE: 'Mute'
-    K_CMENU: 'Menu'
-    PAUSE_BREAK: 'Pause'
-    SLCK: 'Scroll Lock'
-    CLCK: 'Caps'
-    PSCRN: 'PrtSc'
-    LS(SQT): '"'
-    LS(COMMA): '<'
-    LS(DOT): '>'
+    # Defining zmk_keycode_map would replace keymap-drawer's built-in key names
+    # (",", ".", "Space"...), so custom key labels live here instead.
+    '&kp C_MUTE': 'Mute'
+    '&kp K_CMENU': 'Menu'
+    '&kp PAUSE_BREAK': 'Pause'
+    '&kp SLCK': 'Scroll Lock'
+    '&kp CLCK': 'Caps'
+    '&kp PSCRN': 'PrtSc'
+    '&kp LS(SQT)': '"'
+    '&kp LS(COMMA)': '<'
+    '&kp LS(DOT)': '>'
