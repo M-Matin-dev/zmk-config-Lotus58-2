@@ -225,8 +225,7 @@
         num_layer {
             display-name = "Num";
 // Hold the right outer thumb. Left hand is a numpad (Miryoku style: layer on one
-// hand, keys on the other), with 0 on the leftmost thumb key.
-// Shift + digit still gives the usual symbol.
+// hand, keys on the other). Shift + digit still gives the usual symbol.
 // Number row stays as-is for now.
 // ┌─────────┬─────┬─────┬─────┬─────┬─────┐                            ┌─────┬─────┬─────┬─────┬─────┬─────┐
 // │         │     │     │     │     │     │                            │     │     │     │     │     │     │
@@ -238,14 +237,14 @@
 // │         │     │  1  │  2  │  3  │     │          │  │             │     │     │     │     │     │     │
 // └─────────┴─────┴─────┴─────┴─────┴─────┴──────────┘  └─────────────┴─────┴─────┴─────┴─────┴─────┴─────┘
 //                     ┌──────┬──────┬───────┬────────┐      ┌──────┬───────┬──────┬──────┐
-//                     │  0   │  -   │   .   │        │      │      │       │      │▓▓▓▓▓▓│
+//                     │      │  -   │   .   │   0    │      │      │       │      │▓▓▓▓▓▓│
 //                     └──────┴──────┴───────┴────────┘      └──────┴───────┴──────┴──────┘
             bindings = <
 &trans  &trans  &trans  &trans  &trans  &trans                                &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans  &kp N7  &kp N8  &kp N9  &trans                                &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans  &kp N4  &kp N5  &kp N6  &trans  &trans          &trans        &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans  &kp N1  &kp N2  &kp N3  &trans  &trans          &trans        &trans  &trans  &trans  &trans  &trans  &trans
-                        &kp N0  &kp MINUS  &kp DOT  &trans      &trans  &trans  &trans  &trans
+                        &trans  &kp MINUS  &kp DOT  &kp N0      &trans  &trans  &trans  &trans
             >;
             sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp PG_UP PG_DN>;
         };
