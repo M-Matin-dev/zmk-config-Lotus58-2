@@ -55,18 +55,21 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
 
     lv_draw_label_dsc_t label_dsc;
     init_label_dsc(&label_dsc, LVGL_FOREGROUND, &lv_font_montserrat_16, LV_TEXT_ALIGN_RIGHT);
-    lv_draw_label_dsc_t label_dsc_right_pct;
-    init_label_dsc(&label_dsc_right_pct, LVGL_FOREGROUND, &lv_font_montserrat_16, LV_TEXT_ALIGN_CENTER);
-    lv_draw_label_dsc_t label_dsc_right_tag;
-    init_label_dsc(&label_dsc_right_tag, LVGL_FOREGROUND, &lv_font_unscii_8, LV_TEXT_ALIGN_CENTER);
     lv_draw_rect_dsc_t rect_black_dsc;
     init_rect_dsc(&rect_black_dsc, LVGL_BACKGROUND);
 
     // Fill background
     lv_canvas_draw_rect(canvas, 0, 0, CANVAS_SIZE, CANVAS_SIZE, &rect_black_dsc);
 
-    // Draw left battery bar (top-left area, pre-rotation)
-    draw_battery(canvas, state);
+    // Battery bars (pre-rotation coordinates): left half on top, right half below.
+    // The right half doesn't report charging. While it isn't connected (before its
+    // first reading, or after it drops), its battery is drawn crossed out.
+    draw_battery(canvas, 0, 0, state->battery, state->charging);
+    if (state->right_connected) {
+        draw_battery(canvas, 0, 18, state->right_battery, false);
+    } else {
+        draw_battery_disconnected(canvas, 0, 18);
+    }
 
     // Draw output/BT status icon (top-right area, pre-rotation)
     char output_text[10] = {};
@@ -89,16 +92,6 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
     }
 
     lv_canvas_draw_text(canvas, 0, 0, CANVAS_SIZE, &label_dsc, output_text);
-
-    lv_canvas_draw_text(canvas, 0, 23, CANVAS_SIZE, &label_dsc_right_tag, "RIGHT");
-
-    char right_batt_text[6] = {};
-    if (state->right_battery > 0) {
-        snprintf(right_batt_text, sizeof(right_batt_text), "%d%%", state->right_battery);
-    } else {
-        snprintf(right_batt_text, sizeof(right_batt_text), "--");
-    }
-    lv_canvas_draw_text(canvas, 0, 35, CANVAS_SIZE, &label_dsc_right_pct, right_batt_text);
 
     // Rotate canvas
     rotate_canvas(canvas, cbuf);
@@ -232,11 +225,14 @@ ZMK_SUBSCRIPTION(widget_battery_status, zmk_usb_conn_state_changed);
 
 static void set_right_battery_status(struct zmk_widget_status *widget,
                                      struct right_battery_status_state state) {
-    // level 0 means disconnected/cleared (split_central_disconnected injects 0).
-    // A genuinely dead peripheral won't be sending BLE packets, so 0 is never
-    // a real reading worth displaying. Keep the last known good value instead.
+    // ZMK reports level 0 when the right half disconnects (and it is 0 before the
+    // first reading). A real reading is never 0 while the half is still sending, so
+    // treat 0 as "not connected" and keep the last real level for when it returns.
     if (state.level > 0) {
         widget->state.right_battery = state.level;
+        widget->state.right_connected = true;
+    } else {
+        widget->state.right_connected = false;
     }
     draw_top(widget->obj, widget->cbuf, &widget->state);
 }

@@ -24,23 +24,37 @@ void rotate_canvas(lv_obj_t *canvas, lv_color_t cbuf[]) {
                         CANVAS_SIZE / 2, true);
 }
 
-void draw_battery(lv_obj_t *canvas, const struct status_state *state) {
+void draw_battery(lv_obj_t *canvas, lv_coord_t x, lv_coord_t y, uint8_t level, bool charging) {
     lv_draw_rect_dsc_t rect_black_dsc;
     init_rect_dsc(&rect_black_dsc, LVGL_BACKGROUND);
     lv_draw_rect_dsc_t rect_white_dsc;
     init_rect_dsc(&rect_white_dsc, LVGL_FOREGROUND);
 
-    lv_canvas_draw_rect(canvas, 0, 2, 29, 12, &rect_white_dsc);
-    lv_canvas_draw_rect(canvas, 1, 3, 27, 10, &rect_black_dsc);
-    lv_canvas_draw_rect(canvas, 2, 4, (state->battery + 2) / 4, 8, &rect_white_dsc);
-    lv_canvas_draw_rect(canvas, 30, 5, 3, 6, &rect_white_dsc);
-    lv_canvas_draw_rect(canvas, 31, 6, 1, 4, &rect_black_dsc);
+    // Same shape as the stock nice!view battery, offset to (x, y).
+    lv_canvas_draw_rect(canvas, x + 0, y + 2, 29, 12, &rect_white_dsc);
+    lv_canvas_draw_rect(canvas, x + 1, y + 3, 27, 10, &rect_black_dsc);
+    lv_canvas_draw_rect(canvas, x + 2, y + 4, (level + 2) / 4, 8, &rect_white_dsc);
+    lv_canvas_draw_rect(canvas, x + 30, y + 5, 3, 6, &rect_white_dsc);
+    lv_canvas_draw_rect(canvas, x + 31, y + 6, 1, 4, &rect_black_dsc);
 
-    if (state->charging) {
+    if (charging) {
         lv_draw_img_dsc_t img_dsc;
         lv_draw_img_dsc_init(&img_dsc);
-        lv_canvas_draw_img(canvas, 9, -1, &bolt, &img_dsc);
+        lv_canvas_draw_img(canvas, x + 9, y - 1, &bolt, &img_dsc);
     }
+}
+
+void draw_battery_disconnected(lv_obj_t *canvas, lv_coord_t x, lv_coord_t y) {
+    draw_battery(canvas, x, y, 0, false);
+
+    lv_draw_line_dsc_t line_dsc;
+    init_line_dsc(&line_dsc, LVGL_FOREGROUND, 1);
+
+    // X across the inside of the battery body.
+    lv_point_t down[] = {{x + 2, y + 4}, {x + 26, y + 11}};
+    lv_point_t up[] = {{x + 2, y + 11}, {x + 26, y + 4}};
+    lv_canvas_draw_line(canvas, down, 2, &line_dsc);
+    lv_canvas_draw_line(canvas, up, 2, &line_dsc);
 }
 
 void init_label_dsc(lv_draw_label_dsc_t *label_dsc, lv_color_t color, const lv_font_t *font,
