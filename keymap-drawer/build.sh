@@ -4,7 +4,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 KEYMAP=${KEYMAP:-keymap}
-LAYERS=("Win/Lin" "Mac" "Lower" "Raise" "Adjust")
+LAYERS=("Win/Lin" "Mac" "Lower" "Raise" "Num" "Mouse" "Adjust")
 
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT

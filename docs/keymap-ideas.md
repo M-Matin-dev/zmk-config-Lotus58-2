@@ -15,8 +15,11 @@ Things worth looking into once the current work settles. Not scheduled.
 
 ## Layout plans
 
-- Left GUI thumb key becomes `0`.
-- Numbers on Raise at X C V / S D F / W E R, with Shift giving the symbols.
+- Num layer (right outer thumb) and Mouse layer (left outer thumb) are in, following
+  Miryoku's opposite-hand layout. Raise keeps the symbols on both hands.
+- Once the Num numpad feels natural, remove the top number row (or reuse it).
+- Tune the home-row mods against misfires, using urob's "timeless" home-row mods
+  as the reference: https://github.com/urob/zmk-config#timeless-homerow-mods
 
 ## Before upgrading to ZMK v0.4
 

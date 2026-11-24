@@ -27,6 +27,7 @@ parse_config:
     '&msc SCRL_DOWN': 'Scroll ↓'
     '&mkp LCLK': 'L Click'
     '&mkp RCLK': 'R Click'
+    '&mkp MCLK': 'M Click'
     '&bootloader': 'Boot loader'
     '&sys_reset': 'Reset'
     '&bt BT_CLR_ALL': 'BT Clear all'
