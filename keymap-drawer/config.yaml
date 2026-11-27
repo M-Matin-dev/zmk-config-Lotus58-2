@@ -13,6 +13,7 @@ parse_config:
     '&os_mode OS_TOG': {t: 'OS', s: 'Mac/Win'}
     '&os_mode OS_MAC': 'Mac mode'
     '&os_mode OS_WIN': 'Win mode'
+    '&disp_anim': {t: 'Anim', s: 'on/off'}
     # Profiles are numbered from 1 to match the nice!view (ZMK's BT_SEL 0 = profile 1).
     '&bt BT_SEL 0': 'BT 1'
     '&bt BT_SEL 1': 'BT 2'

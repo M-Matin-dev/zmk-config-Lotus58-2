@@ -272,14 +272,14 @@ layers:
   - {t: ▽, type: trans}
   - {t: OS, s: Mac/Win}
   - {t: ▽, type: trans}
+  - {t: Anim, s: on/off}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - {t: Anim, s: on/off}
   - {t: ▽, type: trans}
   - {t: OS, s: Mac/Win}
   - {t: ▽, type: trans}

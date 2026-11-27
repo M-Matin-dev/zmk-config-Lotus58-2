@@ -1,0 +1,7 @@
+description: |
+  Turns the nice!view animation mode on or off (see nice_view/widgets/anim.c).
+  Off shows the normal status panels. The choice is saved to flash.
+
+compatible: "zmk,behavior-display-anim"
+
+include: zero_param.yaml

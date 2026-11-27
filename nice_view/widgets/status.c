@@ -30,6 +30,10 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/split/central.h>
 #include <os_mode.h>
 
+#if IS_ENABLED(CONFIG_LOTUS58_DISPLAY_ANIM)
+#include "anim.h"
+#endif
+
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
 
 struct output_status_state {
@@ -248,7 +252,10 @@ static struct right_battery_status_state right_battery_status_get_state(const zm
     const struct zmk_peripheral_battery_state_changed *ev =
         as_zmk_peripheral_battery_state_changed(eh);
 
-    if (ev != NULL) {
+    // Slot 0 is the right half. ZMK v0.3 also sends a level-0 event when a
+    // computer's Bluetooth link drops, with a slot number that is not a half;
+    // ignore those and keep showing the right half's stored level.
+    if (ev != NULL && ev->source == 0) {
         return (struct right_battery_status_state){.level = ev->state_of_charge};
     }
 
@@ -316,6 +323,9 @@ static void set_layer_status(struct zmk_widget_status *widget, struct layer_stat
     widget->state.layer_label = state.label;
 
     draw_bottom(widget->obj, widget->cbuf3, &widget->state);
+#if IS_ENABLED(CONFIG_LOTUS58_DISPLAY_ANIM)
+    anim_check(); // hide straight away when Adjust turns on
+#endif
 }
 
 static void layer_status_update_cb(struct layer_status_state state) {
@@ -354,6 +364,11 @@ int zmk_widget_status_init(struct zmk_widget_status *widget, lv_obj_t *parent) {
     widget_right_battery_status_init();
     widget_output_status_init();
     widget_layer_status_init();
+
+#if IS_ENABLED(CONFIG_LOTUS58_DISPLAY_ANIM)
+    // Created last so it sits on top of the top and middle panels.
+    anim_init(widget->obj);
+#endif
 
     return 0;
 }

@@ -1,0 +1,40 @@
+config LOTUS58_BATTERY_LOG
+    bool "Log battery voltage, USB power and split link events to flash"
+    depends on SETTINGS && USB_CDC_ACM && BT
+    help
+      Temporary battery test logger (src/battery_log.c). Read the log over the
+      extra USB serial port.
+
+config LOTUS58_BATTERY_LOG_INTERVAL_MIN
+    int "Minutes between battery voltage samples"
+    default 60
+    depends on LOTUS58_BATTERY_LOG
+
+config LOTUS58_BATTERY_LOG_LOAD
+    bool "Extra load during the test: blue LED on and CPU kept awake"
+    depends on LOTUS58_BATTERY_LOG
+    help
+      Raises the draw by a few mA so the battery empties sooner. Toggle at run
+      time with the b key in the log terminal.
+
+config LOTUS58_DISPLAY_ANIM
+    bool "Animation over the top of the nice!view status screen"
+    default y
+    depends on ZMK_DISPLAY && ZMK_DISPLAY_STATUS_SCREEN_CUSTOM
+    help
+      nice_view/widgets/anim.c. Toggle at run time with &disp_anim (Adjust + D/K).
+
+config LOTUS58_DISPLAY_ANIM_BOOT_DELAY_SEC
+    int "Seconds after power-on before the animation can show"
+    default 5
+    depends on LOTUS58_DISPLAY_ANIM
+
+config LOTUS58_DISPLAY_ANIM_ADJUST_DELAY_SEC
+    int "Seconds after Adjust turns off before the animation comes back"
+    default 5
+    depends on LOTUS58_DISPLAY_ANIM
+
+config LOTUS58_DISPLAY_ANIM_HIDE_LAYER
+    int "Layer index that hides the animation (Adjust)"
+    default 4
+    depends on LOTUS58_DISPLAY_ANIM

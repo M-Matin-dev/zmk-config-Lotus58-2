@@ -1,0 +1,3 @@
+/* Battery test logger serial port (battery-logger branch only). ZMK looks for
+ * an overlay per half, so both include the shared file. */
+#include "battery_log.dtsi"

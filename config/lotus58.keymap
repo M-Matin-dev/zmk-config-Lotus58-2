@@ -56,6 +56,13 @@
             mac-layer = <MAC>;
         };
 
+        // nice!view animation mode on/off, saved in flash. See src/display_anim.c
+        // and nice_view/widgets/anim.c.
+        disp_anim: display_anim {
+            compatible = "zmk,behavior-display-anim";
+            #binding-cells = <0>;
+        };
+
         // Alt+Tab app switcher (zmk-tri-state module, see config/west.yml).
         // First press: Alt down + Tab. Further presses: Tab (Alt stays down).
         // Pressing or releasing any other key (e.g. letting go of K) releases Alt.
@@ -205,7 +212,7 @@
 // ├─────────┼──────────┼──────────┼──────────┼──────────┼───────┤                         ├───────┼───────┼───────┼───────┼───────┼───────┤
 // │         │          │          │          │          │       │                         │       │       │       │       │       │       │
 // ├─────────┼──────────┼──────────┼──────────┼──────────┼───────┼──────────┐ ┌────────────┼───────┼───────┼───────┼───────┼───────┼───────┤
-// │         │    OS    │          │          │          │       │          │ │            │       │       │       │       │  OS   │       │
+// │         │    OS    │          │   Anim   │          │       │          │ │            │       │       │ Anim  │       │  OS   │       │
 // ├─────────┼──────────┼──────────┼──────────┼──────────┼───────┼──────────┤ ├────────────┼───────┼───────┼───────┼───────┼───────┼───────┤
 // │         │          │          │          │          │       │          │ │            │       │       │       │       │       │       │
 // └─────────┴──────────┴──────────┴──────────┴──────────┴───────┴──────────┘ └────────────┴───────┴───────┴───────┴───────┴───────┴───────┘
@@ -215,7 +222,7 @@
             bindings = <
 &trans  &bt BT_SEL 0     &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4                     &trans  &trans  &trans  &trans  &trans           &trans
 &trans  &trans           &trans        &trans        &trans        &trans                           &trans  &trans  &trans  &trans  &trans           &trans
-&trans  &os_mode OS_TOG  &trans        &trans        &trans        &trans        &trans  &trans     &trans  &trans  &trans  &trans  &os_mode OS_TOG  &trans
+&trans  &os_mode OS_TOG  &trans        &disp_anim    &trans        &trans        &trans  &trans     &trans  &trans  &disp_anim  &trans  &os_mode OS_TOG  &trans
 &trans  &trans           &trans        &trans        &trans        &trans        &trans  &trans     &trans  &trans  &trans  &trans  &trans           &trans
                                        &trans        &trans        &trans        &trans  &trans     &trans  &trans  &trans
             >;

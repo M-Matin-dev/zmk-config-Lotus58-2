@@ -1,0 +1,17 @@
+/*
+ * Battery test logger (battery-logger branch only): an extra USB serial port on
+ * each half that prints the battery log. On the left half it sits next to the
+ * ZMK Studio port, so Windows shows two COM ports for that half.
+ */
+
+/ {
+    chosen {
+        zmk,battery-log-uart = &battery_log_uart;
+    };
+};
+
+&zephyr_udc0 {
+    battery_log_uart: battery_log_uart {
+        compatible = "zephyr,cdc-acm-uart";
+    };
+};

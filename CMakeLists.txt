@@ -8,6 +8,10 @@ if(CONFIG_ZMK_DISPLAY AND CONFIG_ZMK_DISPLAY_STATUS_SCREEN_CUSTOM AND NOT CONFIG
     zephyr_library_sources(nice_view/widgets/bolt.c)
     zephyr_library_sources(nice_view/widgets/util.c)
     zephyr_library_sources(nice_view/widgets/status.c)
+    if(CONFIG_LOTUS58_DISPLAY_ANIM)
+        zephyr_library_sources(nice_view/widgets/anim.c)
+        zephyr_library_sources(nice_view/widgets/anim_frames.c)
+    endif()
 endif()
 
 # Per-connection Mac/Win mode (&os_mode behavior). The keymap runs only on the
@@ -15,4 +19,11 @@ endif()
 zephyr_include_directories(include)
 if((NOT CONFIG_ZMK_SPLIT) OR CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
     target_sources(app PRIVATE src/os_mode.c)
+    # &disp_anim (Adjust + D/K): nice!view animation on/off.
+    target_sources(app PRIVATE src/display_anim.c)
+endif()
+
+# Temporary battery test logger, both halves (battery-logger branch).
+if(CONFIG_LOTUS58_BATTERY_LOG)
+    target_sources(app PRIVATE src/battery_log.c)
 endif()
