@@ -288,3 +288,15 @@
         };
     };
 };
+
+/*
+ * Aurora Lily58: nice!view chip-select on the DATA hole (nice!nano P0.08 =
+ * pro_micro 0). The stock nice_view_adapter uses pro_micro 1 (P0.06).
+ *
+ * This lives in the keymap file, not a separate overlay, because ZMK parses
+ * the config overlays before nice_view_adapter, which defines nice_view_spi.
+ * The keymap is parsed after it.
+ */
+&nice_view_spi {
+    cs-gpios = <&pro_micro 0 GPIO_ACTIVE_HIGH>;
+};
