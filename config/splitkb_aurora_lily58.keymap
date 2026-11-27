@@ -294,9 +294,11 @@
  * pro_micro 0). The stock nice_view_adapter uses pro_micro 1 (P0.06).
  *
  * This lives in the keymap file, not a separate overlay, because ZMK parses
- * the config overlays before nice_view_adapter, which defines nice_view_spi.
- * The keymap is parsed after it.
+ * the config overlays before nice_view_adapter, which sets cs-gpios on spi0.
+ * The keymap is parsed after it. Labelled &spi0 rather than &nice_view_spi
+ * because this file is also parsed for the right half, which has no adapter
+ * and no nice_view_spi label. spi0 exists on both halves.
  */
-&nice_view_spi {
+&spi0 {
     cs-gpios = <&pro_micro 0 GPIO_ACTIVE_HIGH>;
 };
