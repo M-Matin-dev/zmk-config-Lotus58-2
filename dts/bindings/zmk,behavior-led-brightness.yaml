@@ -1,0 +1,9 @@
+description: |
+  LED brightness up/down in 2% steps, and 1% steps below 2%. The left half
+  works out the new brightness and sends the absolute colour to both halves,
+  the same way ZMK's own &rgb_ug brightness keys do.
+  Use with LED_BRI or LED_BRD from <dt-bindings/led_brightness.h>.
+
+compatible: "zmk,behavior-led-brightness"
+
+include: two_param.yaml

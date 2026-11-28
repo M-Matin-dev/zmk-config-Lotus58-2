@@ -33,3 +33,9 @@ endif()
 if(CONFIG_ZMK_RGB_UNDERGLOW)
     target_sources(app PRIVATE src/reactive_led.c)
 endif()
+
+# LED brightness keys with 2%/1% steps (&led_brt). Global behavior: built on
+# both halves so the right half can apply the colour the left half sends.
+if(CONFIG_ZMK_RGB_UNDERGLOW)
+    target_sources(app PRIVATE src/behavior_led_brightness.c)
+endif()

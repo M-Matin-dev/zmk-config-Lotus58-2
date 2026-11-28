@@ -30,6 +30,11 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/split/central.h>
 #include <os_mode.h>
 
+#if IS_ENABLED(CONFIG_ZMK_RGB_UNDERGLOW)
+#include <stdio.h>
+#include <zmk/rgb_underglow.h>
+#endif
+
 #if IS_ENABLED(CONFIG_LOTUS58_DISPLAY_ANIM)
 #include "anim.h"
 #endif
@@ -96,6 +101,21 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
     }
 
     lv_canvas_draw_text(canvas, 0, 0, CANVAS_SIZE, &label_dsc, output_text);
+
+#if IS_ENABLED(CONFIG_ZMK_RGB_UNDERGLOW)
+    // LED state (pre-rotation): in the free space right of the right-half battery
+    // (x 35-67) and under the output icon (y 19-34). Two short lines, small font:
+    // ON/OFF, then the effect number (1 = solid, 2 = breathe, 3 = spectrum, 4 = swirl).
+    if (state->led_known) {
+        lv_draw_label_dsc_t led_dsc;
+        init_label_dsc(&led_dsc, LVGL_FOREGROUND, &lv_font_unscii_8, LV_TEXT_ALIGN_RIGHT);
+        char effect_text[8];
+        snprintf(effect_text, sizeof(effect_text), "FX%d", state->led_effect + 1);
+        lv_canvas_draw_text(canvas, 35, 19, CANVAS_SIZE - 35, &led_dsc,
+                            state->led_on ? "ON" : "OFF");
+        lv_canvas_draw_text(canvas, 35, 27, CANVAS_SIZE - 35, &led_dsc, effect_text);
+    }
+#endif
 
     // Rotate canvas
     rotate_canvas(canvas, cbuf);
@@ -344,6 +364,32 @@ ZMK_DISPLAY_WIDGET_LISTENER(widget_layer_status, struct layer_status_state, laye
 
 ZMK_SUBSCRIPTION(widget_layer_status, zmk_layer_state_changed);
 
+// ── LED state ─────────────────────────────────────────────────────────────────
+// ZMK v0.3 raises no event when the underglow changes, so check it a few times a
+// second on the display thread and redraw the top panel only when it changed.
+
+#if IS_ENABLED(CONFIG_ZMK_RGB_UNDERGLOW)
+#define LED_STATUS_CHECK_MS 300
+
+static void led_status_check(lv_timer_t *timer) {
+    bool on = false;
+    zmk_rgb_underglow_get_state(&on);
+    uint8_t effect = (uint8_t)zmk_rgb_underglow_calc_effect(0); /* current effect */
+
+    struct zmk_widget_status *widget;
+    SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
+        if (widget->state.led_known && widget->state.led_on == on &&
+            widget->state.led_effect == effect) {
+            continue;
+        }
+        widget->state.led_known = true;
+        widget->state.led_on = on;
+        widget->state.led_effect = effect;
+        draw_top(widget->obj, widget->cbuf, &widget->state);
+    }
+}
+#endif
+
 // ── Widget init ───────────────────────────────────────────────────────────────
 
 int zmk_widget_status_init(struct zmk_widget_status *widget, lv_obj_t *parent) {
@@ -364,6 +410,10 @@ int zmk_widget_status_init(struct zmk_widget_status *widget, lv_obj_t *parent) {
     widget_right_battery_status_init();
     widget_output_status_init();
     widget_layer_status_init();
+
+#if IS_ENABLED(CONFIG_ZMK_RGB_UNDERGLOW)
+    lv_timer_create(led_status_check, LED_STATUS_CHECK_MS, NULL);
+#endif
 
 #if IS_ENABLED(CONFIG_LOTUS58_DISPLAY_ANIM)
     // Created last so it sits on top of the top and middle panels.

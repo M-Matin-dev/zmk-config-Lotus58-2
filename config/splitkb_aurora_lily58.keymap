@@ -15,6 +15,7 @@
 #include <dt-bindings/zmk/pointing.h>
 #include <dt-bindings/os_mode.h>
 #include <dt-bindings/zmk/rgb.h>
+#include <dt-bindings/led_brightness.h>
 
 #define DEFAULT 0
 #define MAC     1
@@ -66,6 +67,13 @@
         disp_anim: display_anim {
             compatible = "zmk,behavior-display-anim";
             #binding-cells = <0>;
+        };
+
+        // LED brightness in 2% steps, 1% below 2% (Adjust + E/R).
+        // See src/behavior_led_brightness.c.
+        led_brt: led_brightness {
+            compatible = "zmk,behavior-led-brightness";
+            #binding-cells = <2>;
         };
 
         // Alt+Tab app switcher (zmk-tri-state module, see config/west.yml).
@@ -225,10 +233,10 @@
 //                           │        │         │       │       │      │       │       │       │       │
 //                           └────────┴─────────┴───────┴───────┘      └───────┴───────┴───────┴───────┘
 // LED keys (Adjust): Q on/off (cuts power, screen too), W dark (power stays on),
-// E/R brightness -/+, T white 10%, Z/X hue -/+, C/V saturation -/+, B next effect.
+// E/R brightness -/+ (2% steps, 1% below 2%), T white 10%, Z/X hue -/+, C/V saturation -/+, B next effect.
             bindings = <
     &trans          &bt BT_SEL 0    &bt BT_SEL 1    &bt BT_SEL 2    &bt BT_SEL 3    &bt BT_SEL 4    &trans          &trans          &trans          &trans          &trans          &trans
-    &trans          &rgb_ug RGB_TOG  &rgb_ug RGB_COLOR_HSB(0,0,0)  &rgb_ug RGB_BRD  &rgb_ug RGB_BRI  &rgb_ug RGB_COLOR_HSB(0,0,10)  &trans          &trans          &trans          &trans          &trans          &trans
+    &trans          &rgb_ug RGB_TOG  &rgb_ug RGB_COLOR_HSB(0,0,0)  &led_brt LED_BRD  &led_brt LED_BRI  &rgb_ug RGB_COLOR_HSB(0,0,10)  &trans          &trans          &trans          &trans          &trans          &trans
     &trans          &os_mode OS_TOG  &trans          &disp_anim      &trans          &trans          &trans          &trans          &disp_anim      &trans          &os_mode OS_TOG  &trans
     &trans          &rgb_ug RGB_HUD  &rgb_ug RGB_HUI  &rgb_ug RGB_SAD  &rgb_ug RGB_SAI  &rgb_ug RGB_EFF  &trans          &trans          &trans          &trans          &trans          &trans          &trans          &trans
     &trans          &trans          &trans          &trans          &trans          &trans          &trans          &trans

@@ -32,6 +32,9 @@ struct status_state {
     const char *layer_label;
     uint8_t right_battery;
     bool right_connected; /* false until the right half's first reading, and after it disconnects */
+    bool led_known;       /* LED fields below have been read at least once */
+    bool led_on;
+    uint8_t led_effect; /* ZMK underglow effect index, 0-based */
 #else
     bool connected;
 #endif
