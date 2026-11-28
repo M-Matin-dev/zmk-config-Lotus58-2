@@ -39,3 +39,9 @@ endif()
 if(CONFIG_ZMK_RGB_UNDERGLOW)
     target_sources(app PRIVATE src/behavior_led_brightness.c)
 endif()
+
+# Left (central) half only: when the right half reconnects, send it the current
+# LED on/off, colour and effect so the two halves match again (src/split_led_sync.c).
+if(CONFIG_ZMK_SPLIT AND CONFIG_ZMK_SPLIT_ROLE_CENTRAL AND CONFIG_ZMK_RGB_UNDERGLOW)
+    target_sources(app PRIVATE src/split_led_sync.c)
+endif()
