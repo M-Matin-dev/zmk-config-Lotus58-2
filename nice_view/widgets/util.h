@@ -35,6 +35,7 @@ struct status_state {
     bool led_known;       /* LED fields below have been read at least once */
     bool led_on;
     uint8_t led_effect; /* ZMK underglow effect index, 0-based */
+    uint8_t led_brightness; /* underglow brightness, 0-100 percent */
 #else
     bool connected;
 #endif

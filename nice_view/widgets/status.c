@@ -114,6 +114,9 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
         lv_canvas_draw_text(canvas, 35, 19, CANVAS_SIZE - 35, &led_dsc,
                             state->led_on ? "ON" : "OFF");
         lv_canvas_draw_text(canvas, 35, 27, CANVAS_SIZE - 35, &led_dsc, effect_text);
+        char brt_text[6];
+        snprintf(brt_text, sizeof(brt_text), "%d%%", state->led_brightness);
+        lv_canvas_draw_text(canvas, 35, 35, CANVAS_SIZE - 35, &led_dsc, brt_text);
     }
 #endif
 
@@ -375,16 +378,18 @@ static void led_status_check(lv_timer_t *timer) {
     bool on = false;
     zmk_rgb_underglow_get_state(&on);
     uint8_t effect = (uint8_t)zmk_rgb_underglow_calc_effect(0); /* current effect */
+    uint8_t brightness = (uint8_t)zmk_rgb_underglow_calc_brt(0).b; /* 0-100 percent */
 
     struct zmk_widget_status *widget;
     SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) {
         if (widget->state.led_known && widget->state.led_on == on &&
-            widget->state.led_effect == effect) {
+            widget->state.led_effect == effect && widget->state.led_brightness == brightness) {
             continue;
         }
         widget->state.led_known = true;
         widget->state.led_on = on;
         widget->state.led_effect = effect;
+        widget->state.led_brightness = brightness;
         draw_top(widget->obj, widget->cbuf, &widget->state);
     }
 }
