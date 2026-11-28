@@ -1,0 +1,31 @@
+description: |
+  Per-key reactive LEDs. ZMK's RGB underglow sends each frame (every 50 ms) to
+  this device instead of the real LED strip. The LED under a key that was just
+  pressed on this half is drawn up to twice as bright, fading back to the
+  normal underglow colour over fade-ms. The frame is then passed on to the
+  real strip. See src/reactive_led.c.
+
+compatible: "zmk,reactive-led-strip"
+
+properties:
+  led-strip:
+    type: phandle
+    required: true
+    description: The real LED strip (for example the ws2812 node).
+
+  chain-length:
+    type: int
+    required: true
+    description: Number of LEDs. ZMK's underglow reads this from the chosen node.
+
+  key-leds:
+    type: array
+    required: true
+    description: |
+      LED index for each key position, in keymap order (255 = no LED). Each
+      half only reacts to its own key presses, so one table serves both halves.
+
+  fade-ms:
+    type: int
+    default: 400
+    description: How long a pressed key's LED takes to fade back to normal.

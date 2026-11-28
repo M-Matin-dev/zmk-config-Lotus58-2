@@ -318,3 +318,35 @@
 &led_strip {
     chain-length = <29>;
 };
+
+/*
+ * Per-key reactive LEDs (src/reactive_led.c): the LED under a pressed key
+ * flashes to twice its brightness and fades back over fade-ms. ZMK's
+ * underglow draws into this node, which passes frames on to the real strip.
+ *
+ * key-leds: LED number for each key position, from the Aurora Lily58 schematic.
+ *   Left chain:  SW1-6 (top row, outer->inner), SW7-12, SW13-18,
+ *                SW20-25 (bottom row, outer->inner), SW19 (inner key), SW26-29 (thumbs, outer->inner)
+ *   Right chain: SW6-1 (top row, inner->outer), SW12-7, SW18-13,
+ *                SW19 (inner key), SW25-21, SW20 (outer), SW29-26 (thumbs, inner->outer)
+ * Read in keymap order, both halves come out as the same numbers.
+ */
+/ {
+    reactive_strip: reactive_strip {
+        compatible = "zmk,reactive-led-strip";
+        led-strip = <&led_strip>;
+        chain-length = <29>;
+        fade-ms = <400>;
+        key-leds = <
+             0  1  2  3  4  5                       0  1  2  3  4  5
+             6  7  8  9 10 11                       6  7  8  9 10 11
+            12 13 14 15 16 17                      12 13 14 15 16 17
+            18 19 20 21 22 23 24                18 19 20 21 22 23 24
+                     25 26 27 28          25 26 27 28
+        >;
+    };
+
+    chosen {
+        zmk,underglow = &reactive_strip;
+    };
+};

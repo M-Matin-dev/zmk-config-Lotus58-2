@@ -27,3 +27,9 @@ endif()
 if(CONFIG_LOTUS58_BATTERY_LOG)
     target_sources(app PRIVATE src/battery_log.c)
 endif()
+
+# Per-key reactive LEDs (Aurora Lily58): pressed key's LED flashes and fades.
+# Both halves; the code only builds in when a "zmk,reactive-led-strip" node exists.
+if(CONFIG_ZMK_RGB_UNDERGLOW)
+    target_sources(app PRIVATE src/reactive_led.c)
+endif()
