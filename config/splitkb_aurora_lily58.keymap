@@ -303,3 +303,16 @@
 &spi0 {
     cs-gpios = <&pro_micro 0 GPIO_ACTIVE_HIGH>;
 };
+
+/*
+ * Aurora Lily58 per-key LEDs: 29 per half.
+ *
+ * ZMK's own splitkb_aurora_lily58 shield already defines the LED chain
+ * (SPI3 MOSI on P0.06) in boards/nice_nano_v2.overlay, with a placeholder
+ * chain-length of 5. That file is parsed after the config overlays, so the
+ * length has to be set here, in the keymap, which is parsed last. Applies to
+ * both halves.
+ */
+&led_strip {
+    chain-length = <29>;
+};
